@@ -2684,8 +2684,8 @@ declare class StaticMesh extends StreamableRenderAsset {
 	EnableSectionCastShadow(bCastShadow: boolean,LODIndex: number,SectionIndex: number): void;
 	EnableSectionCollision(bCollisionEnabled: boolean,LODIndex: number,SectionIndex: number): void;
 	GenerateBoxUVChannel(LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,Size: Vector): boolean;
-	GenerateCylindricalUVChannel(LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,Tiling: Vector2D): boolean;
-	GeneratePlanarUVChannel(LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,Tiling: Vector2D): boolean;
+	GenerateCylindricalUVChannel(LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,tiling: Vector2D): boolean;
+	GeneratePlanarUVChannel(LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,tiling: Vector2D): boolean;
 	GetCollisionComplexity(): ECollisionTraceFlag;
 	GetConvexCollisionCount(): number;
 	GetLodBuildSettings(LODIndex: number,OutBuildOptions?: MeshBuildSettings): {OutBuildOptions: MeshBuildSettings};
@@ -2726,8 +2726,8 @@ declare class StaticMesh extends StreamableRenderAsset {
 	static EnableSectionCastShadow(StaticMesh: StaticMesh,bCastShadow: boolean,LODIndex: number,SectionIndex: number): void;
 	static EnableSectionCollision(StaticMesh: StaticMesh,bCollisionEnabled: boolean,LODIndex: number,SectionIndex: number): void;
 	static GenerateBoxUVChannel(StaticMesh: StaticMesh,LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,Size: Vector): boolean;
-	static GenerateCylindricalUVChannel(StaticMesh: StaticMesh,LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,Tiling: Vector2D): boolean;
-	static GeneratePlanarUVChannel(StaticMesh: StaticMesh,LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,Tiling: Vector2D): boolean;
+	static GenerateCylindricalUVChannel(StaticMesh: StaticMesh,LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,tiling: Vector2D): boolean;
+	static GeneratePlanarUVChannel(StaticMesh: StaticMesh,LODIndex: number,UVChannelIndex: number,Position: Vector,Orientation: Rotator,tiling: Vector2D): boolean;
 	static GetCollisionComplexity(StaticMesh: StaticMesh): ECollisionTraceFlag;
 	static GetConvexCollisionCount(StaticMesh: StaticMesh): number;
 	static GetLodBuildSettings(StaticMesh: StaticMesh,LODIndex: number,OutBuildOptions?: MeshBuildSettings): {OutBuildOptions: MeshBuildSettings};
@@ -3447,7 +3447,7 @@ declare class SlateBrush {
 	ResourceName: string;
 	UVRegion: Box2D;
 	DrawAs: ESlateBrushDrawType;
-	Tiling: ESlateBrushTileType;
+	tiling: ESlateBrushTileType;
 	Mirroring: ESlateBrushMirrorType;
 	ImageType: ESlateBrushImageType;
 	bIsDynamicallyLoaded: boolean;
@@ -12408,19 +12408,6 @@ declare class ActorLayer {
 	static C(Other: UObject | any): ActorLayer;
 }
 
-declare class VaRestURL { 
-	Protocol: string;
-	Host: string;
-	Port: number;
-	Valid: number;
-	Map: string;
-	RedirectURL: string;
-	Op: string[];
-	Portal: string;
-	clone() : VaRestURL;
-	static C(Other: UObject | any): VaRestURL;
-}
-
 declare class URL { 
 	Protocol: string;
 	Host: string;
@@ -12565,6 +12552,19 @@ declare class RecastNavMesh extends NavigationData {
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): RecastNavMesh;
 	K2_ReplaceAreaInTileBounds(Bounds: Box,OldArea: UnrealEngineClass,NewArea: UnrealEngineClass,ReplaceLinks: boolean): boolean;
 	static C(Other: UObject | any): RecastNavMesh;
+}
+
+declare class VaRestURL { 
+	Protocol: string;
+	Host: string;
+	Port: number;
+	Valid: number;
+	Map: string;
+	RedirectURL: string;
+	Op: string[];
+	Portal: string;
+	clone() : VaRestURL;
+	static C(Other: UObject | any): VaRestURL;
 }
 
 declare type EARWorldAlignment = 'Gravity' | 'GravityAndHeading' | 'Camera' | 'EARWorldAlignment_MAX';
@@ -15898,11 +15898,6 @@ declare class World extends UObject {
 	InvalidateModelGeometry(InLevel: Level): void;
 	RemoveLevelInstance(): void;
 	GetActors(ActorLayer: ActorLayer): Actor[];
-	CreateGraphInstance(Factory: SubstanceInstanceFactory,GraphDescIndex: number,ParentMaterial: Material,InstanceName: string): SubstanceGraphInstance;
-	DisableInstanceOutputs(GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
-	DuplicateGraphInstance(GraphInstance: SubstanceGraphInstance): SubstanceGraphInstance;
-	EnableInstanceOutputs(GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
-	GetWorldURL(): VaRestURL;
 	BeginPlay(): void;
 	DestroyWorld(): void;
 	InitializeActorsForPlay(URL: URL): void;
@@ -15915,6 +15910,11 @@ declare class World extends UObject {
 	IsGameWorld(): boolean;
 	IsPlayInEditor(): boolean;
 	IsPlayInPreview(): boolean;
+	GetWorldURL(): VaRestURL;
+	CreateGraphInstance(Factory: SubstanceInstanceFactory,GraphDescIndex: number,ParentMaterial: Material,InstanceName: string): SubstanceGraphInstance;
+	DisableInstanceOutputs(GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
+	DuplicateGraphInstance(GraphInstance: SubstanceGraphInstance): SubstanceGraphInstance;
+	EnableInstanceOutputs(GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
 	LuminARLineTrace(ScreenPosition: Vector2D,TraceChannels: any,OutHitResults?: ARTraceResult[]): {OutHitResults: ARTraceResult[], $: boolean};
 	StartLuminARSession(LatentInfo: LatentActionInfo,Configuration: LuminARSessionConfig): void;
 	GetNiagaraParameterCollection(Collection: NiagaraParameterCollection): NiagaraParameterCollectionInstance;
@@ -16174,11 +16174,6 @@ declare class World extends UObject {
 	static InvalidateModelGeometry(World: World,InLevel: Level): void;
 	static RemoveLevelInstance(World: World): void;
 	static GetActors(WorldContextObject: UObject,ActorLayer: ActorLayer): Actor[];
-	static CreateGraphInstance(WorldContextObject: UObject,Factory: SubstanceInstanceFactory,GraphDescIndex: number,ParentMaterial: Material,InstanceName: string): SubstanceGraphInstance;
-	static DisableInstanceOutputs(WorldContextObject: UObject,GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
-	static DuplicateGraphInstance(WorldContextObject: UObject,GraphInstance: SubstanceGraphInstance): SubstanceGraphInstance;
-	static EnableInstanceOutputs(WorldContextObject: UObject,GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
-	static GetWorldURL(WorldContextObject: UObject): VaRestURL;
 	static BeginPlay(World: World): void;
 	static DestroyWorld(World: World): void;
 	static InitializeActorsForPlay(World: World,URL: URL): void;
@@ -16191,6 +16186,11 @@ declare class World extends UObject {
 	static IsGameWorld(World: World): boolean;
 	static IsPlayInEditor(World: World): boolean;
 	static IsPlayInPreview(World: World): boolean;
+	static GetWorldURL(WorldContextObject: UObject): VaRestURL;
+	static CreateGraphInstance(WorldContextObject: UObject,Factory: SubstanceInstanceFactory,GraphDescIndex: number,ParentMaterial: Material,InstanceName: string): SubstanceGraphInstance;
+	static DisableInstanceOutputs(WorldContextObject: UObject,GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
+	static DuplicateGraphInstance(WorldContextObject: UObject,GraphInstance: SubstanceGraphInstance): SubstanceGraphInstance;
+	static EnableInstanceOutputs(WorldContextObject: UObject,GraphInstance: SubstanceGraphInstance,OutputIndices: number[]): void;
 	static LuminARLineTrace(WorldContextObject: UObject,ScreenPosition: Vector2D,TraceChannels: any,OutHitResults?: ARTraceResult[]): {OutHitResults: ARTraceResult[], $: boolean};
 	static StartLuminARSession(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Configuration: LuminARSessionConfig): void;
 	static GetNiagaraParameterCollection(WorldContextObject: UObject,Collection: NiagaraParameterCollection): NiagaraParameterCollectionInstance;
